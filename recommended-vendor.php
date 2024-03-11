@@ -187,16 +187,16 @@ class ChangeVendorDataMetaBox
 
 			<form method="POST">
 				<label>Vendor Name:</label>
-				<input type="text" value="<?php echo get_post_meta( $post_id, 'vendor_name' )[0] ?>">
+				<input type="text" value="<?php echo get_post_meta( $post_id, 'vendor_name' )[0] ?>" name="vendor_name">
 
 				<label>Phone Number:</label>
-				<input type="tel" value="<?php echo get_post_meta( $post_id, 'phone_num' )[0] ?>">
+				<input type="tel" value="<?php echo get_post_meta( $post_id, 'phone_num' )[0] ?>" name="phone_num">
 
 				<label>Email:</label>
-				<input type="email" value="<?php echo get_post_meta( $post_id, 'email' )[0] ?>">
+				<input type="email" value="<?php echo get_post_meta( $post_id, 'email' )[0] ?>" name="email">
 
 				<label>Website:</label>
-				<input type="text" value="<?php echo get_post_meta( $post_id, 'website_url' )[0]  ?>">
+				<input type="text" value="<?php echo get_post_meta( $post_id, 'website_url' )[0]  ?>" name="wesbite_url">
 
 				<label>Industry:</label>
 				<select id="industry" name="industry" required>
@@ -211,6 +211,11 @@ class ChangeVendorDataMetaBox
 				<textarea id="why" name="why" required><?php echo get_post_meta( $post_id, 'why' )[0]?></textarea>
 			</form>
 		<?php
+	}
+
+	public function update_data( $id, $meta_key, $meta_value)
+	{
+		update_post_meta( $id, $meta_key, $meta_value );
 	}
 } 
 
@@ -236,3 +241,8 @@ if ( ! empty( $_POST ) && $_SERVER['REQUEST_URI'] === '/form/' ) {
 	}
 }
 
+if ( ! empty( $_POST) && $_SERVER['PHP_SELF'] === '/wp-admin/post.php' ) {
+	if ( ! empty( $_GET ) ) {
+		//$metaBox->update_data( (int) $_GET['post'], 'vendor_name', 'test' );
+	}
+}
