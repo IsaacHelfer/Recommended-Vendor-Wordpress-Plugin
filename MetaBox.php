@@ -2,8 +2,6 @@
 
 class MetaBox
 {
-	private int $id;
-
 	public function __construct()
 	{
 		add_action( 'add_meta_boxes', array( $this, 'create_meta_box' ) );
@@ -39,28 +37,29 @@ class MetaBox
 
 			<form method="POST">
 				<label>Vendor Name:</label>
-				<input type="text" value="<?php echo get_post_meta( $post_id, 'vendor_name' )[0] ?>" name="vendor_name">
+				<input type="text" value="<?php echo get_post_meta( $post_id, 'vendor_name', true ) ?>" name="vendor_name" required>
 
 				<label>Phone Number:</label>
-				<input type="tel" value="<?php echo get_post_meta( $post_id, 'phone_num' )[0] ?>" name="phone_num">
+				<label><small>Format: 000-000-0000</small></label>
+				<input type="tel" value="<?php echo get_post_meta( $post_id, 'phone_num', true ) ?>" name="phone_num" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
 
 				<label>Email:</label>
-				<input type="email" value="<?php echo get_post_meta( $post_id, 'email' )[0] ?>" name="email">
+				<input type="email" value="<?php echo get_post_meta( $post_id, 'email', true ) ?>" name="email" required>
 
 				<label>Website:</label>
-				<input type="text" value="<?php echo get_post_meta( $post_id, 'website_url' )[0]  ?>" name="wesbite_url">
+				<input type="text" value="<?php echo get_post_meta( $post_id, 'website_url', true ) ?>" name="wesbite_url" required>
 
 				<label>Industry:</label>
 				<select id="industry" name="industry" required>
 					<?php foreach ($drop_down_items as $item) :?>
-						<option <?php if ( $item === get_post_meta( $post_id, 'industry' )[0] ) { echo 'selected'; } ?>>
+						<option <?php if ( $item === get_post_meta( $post_id, 'industry', true ) ) { echo 'selected'; } ?>>
 							<?php echo $item; ?>
 						</option>
 					<?php endforeach; ?>
 				</select>
 
 				<label>Why do you recommend this vendor?</label>
-				<textarea id="why" name="why" required><?php echo get_post_meta( $post_id, 'why' )[0]?></textarea>
+				<textarea id="why" name="why" required><?php echo get_post_meta( $post_id, 'why', true ) ?></textarea>
 			</form>
 		<?php
 	}
@@ -72,9 +71,11 @@ class MetaBox
 		$meta_keys = array( 'vendor_name', 'phone_num', 'email', 'website_url', 'industry', 'why' );
 
 		// get the meta values needed from $_POST
-		foreach ( $meta_keys as $key ) {
-			if ( array_key_exists( $key, $_POST ) ) {
-				update_post_meta( $post->ID, $key, $_POST[$key] );
+		if ( ! empty( $_POST ) ) {
+			foreach ( $meta_keys as $key ) {
+				if ( array_key_exists( $key, $_POST ) ) {
+					update_post_meta( $post->ID, $key, trim( $_POST[$key] ) );
+				}
 			}
 		}
 	}
