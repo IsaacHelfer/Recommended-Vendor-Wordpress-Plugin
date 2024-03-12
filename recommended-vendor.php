@@ -14,10 +14,10 @@ if ( ! defined('ABSPATH') )
 }
 
 require 'RecommendedVendorPlugin.php';
-require 'ChangeVendorDataMetaBox.php';
+require 'MetaBox.php';
 
 $vendorPlugin = new RecommendedVendorPlugin();
-$metaBox = new ChangeVendorDataMetaBox();
+$metaBox = new MetaBox();
 
 // if vendor form submited
 if ( ! empty( $_POST ) && $_SERVER['REQUEST_URI'] === '/form/' ) {

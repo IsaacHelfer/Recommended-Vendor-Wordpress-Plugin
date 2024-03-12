@@ -2,8 +2,6 @@
 
 class RecommendedVendorPlugin
 {
-	public $testing = true;
-
 	public function __construct() 
 	{
 		require ABSPATH . 'wp-includes/pluggable.php';
@@ -70,7 +68,8 @@ class RecommendedVendorPlugin
 
 			<div>
 				<form method="POST">
-					<?php if ($this->testing) : ?>
+					<?php $testing = true; ?>
+					<?php if ($testing) : ?>
 						<div>
 							<button type="button" onclick="fillForm()">Fill Form (testing)</button>
 						</div>

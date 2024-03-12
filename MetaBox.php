@@ -1,22 +1,22 @@
 <?php
 
-class ChangeVendorDataMetaBox
+class MetaBox
 {
+	private int $id;
+
 	public function __construct()
 	{
 		add_action( 'add_meta_boxes', array( $this, 'create_meta_box' ) );
 
-		add_action( 'save_post', array($this, 'test') );
-	}
-
-	public function test()
-	{
-		echo 'test';
-		die;
+		add_action( 'save_post', array($this, 'update_data') );
 	}
 
 	public function create_meta_box()
 	{
+		if ( empty( $_GET ) ) {
+			return;
+		}
+
 		add_meta_box( 'change_vendor_data', 'Change Vendor Data', array( $this, 'render_html' ), 'vendor' );
 	}
 
@@ -65,8 +65,17 @@ class ChangeVendorDataMetaBox
 		<?php
 	}
 
-	public function update_data( $id, $meta_key, $meta_value)
+	public function update_data()
 	{
-		update_post_meta( $id, $meta_key, $meta_value );
+		global $post;
+
+		$meta_keys = array( 'vendor_name', 'phone_num', 'email', 'website_url', 'industry', 'why' );
+
+		// get the meta values needed from $_POST
+		foreach ( $meta_keys as $key ) {
+			if ( array_key_exists( $key, $_POST ) ) {
+				update_post_meta( $post->ID, $key, $_POST[$key] );
+			}
+		}
 	}
 } 
