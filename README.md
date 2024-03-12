@@ -1,1 +1,1 @@
-Wordpress plugin to recommend vendors.
+<strong>Wordpress plugin</strong>
